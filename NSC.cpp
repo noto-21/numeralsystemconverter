@@ -18,9 +18,6 @@ const std::string clear_cmd = "clear";
 const std::string clear_cmd = "clear";
 #endif
 
-//Using standard C++ namespace library
-using namespace std;
-
 /*---Functions---*/
 
 //Functions to confirm input
@@ -32,25 +29,28 @@ bool ValidateInput(const std::string& input, int base)
     {
     case 2://Binary
         valid_chars = "01";
+
         break;
+
     case 8://Octal
         valid_chars = "01234567";
+
         break;
+
     case 10://Decimal
         valid_chars = "0123456789";
+
         break;
+
     case 16://Hexadecimal
         valid_chars = "0123456789abcdefABCDEF";
+
         break;
-    default://Invalid base
-        return false;
     }
 
     for (char c : input)
-    {
         if (valid_chars.find(c) == std::string::npos)
             return false;
-    }
 
     return true;
 }//Confirm number
@@ -63,6 +63,7 @@ bool ValidateInput(int base)
     case 10://Decimal
     case 16://Hexadecimal
         break;
+
     default://Invalid base
         return false;
     }
@@ -70,44 +71,68 @@ bool ValidateInput(int base)
     return true;
 }//Confirm base
 
-//Function to convert a decimal number to a given base
-string decimalToBase(int num, int base)
+//Catches input that cannot be converted to a string
+void STOI_CATCH(std::string& bIn, int& b)
 {
-    string result = "";
+    bool caught = false;
+
+    while (!caught)
+    {
+        try
+        {
+            b = stoi(bIn);
+
+            caught = true;
+        }
+        catch (std::invalid_argument const& ex)
+        {
+            std::cout << "\n\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
+            std::cin >> bIn;
+        }
+    }
+}
+
+//Function to convert a decimal number to a given base
+std::string decimalToBase(int num, int base)
+{
+    std::string result = "";
+
     while (num > 0)
     {
         int rem = num % base;
+
         if (rem < 10)
-            result = to_string(rem) + result;
+            result = std::to_string(rem) + result;
         else
             result = char('A' + rem - 10) + result;
+
         num /= base;
     }
+
     return result;
 }
 
 //Function to convert a number in a given base to decimal
-int baseToDecimal(string num, int base)
+int baseToDecimal(std::string num, int base)
 {
-    int result = 0;
-    int power = 0;
-    for (int i = num.size() - 1; i >= 0; i--) {
-        int digit;
-        if (num[i] >= '0' && num[i] <= '9') {
+    int result = 0, power = 0;
+
+    for (int i = num.size() - 1; i >= 0; i--)
+    {
+        int digit = 0;
+
+        if (num[i] >= '0' && num[i] <= '9')
             digit = num[i] - '0';
-        }
-        else if (num[i] >= 'A' && num[i] <= 'F') {
+        else if (num[i] >= 'A' && num[i] <= 'F')
             digit = num[i] - 'A' + 10;
-        }
-        else if (num[i] >= 'a' && num[i] <= 'f') {
+        else if (num[i] >= 'a' && num[i] <= 'f')
             digit = num[i] - 'a' + 10;
-        }
-        else {
-            return -1;  // invalid input
-        }
+
         result += digit * pow(base, power);
+
         power++;
     }
+
     return result;
 }
 
@@ -116,8 +141,8 @@ int main()
 {
     /*---Declarations---*/
 
-    string num;//Declares all necessary strings
-    int base;//Declares all necessary integers
+    std::string num, baseIn;//Declares all necessary strings
+    int base = 0;//Declares all necessary integers
     char repeat;//Declares all necesary characters
 
     //Menu
@@ -125,24 +150,29 @@ int main()
     {
         /*---Operations---*/
 
-        system(clear_cmd.c_str());//Clear console [PORTABLE]
+        system(clear_cmd.c_str());//Clear console
 
-        cout << "Please enter the base of the number you wish to convert: ";
-        cin >> base;
+        std::cout << "Please enter the base of the number you wish to convert: ";
+        std::cin >> baseIn;
+
+        STOI_CATCH(baseIn, base);
+
         while (!ValidateInput(base))
         {
-            cout << "\n\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
-            cin >> base;
+            std::cout << "\n\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
+            std::cin >> baseIn;
+
+            STOI_CATCH(baseIn, base);
 
             ValidateInput(base);
         }
 
-        cout << "\n\nNow please enter the number itself: ";
-        cin >> num;
+        std::cout << "\n\nNow please enter the number itself: ";
+        std::cin >> num;
         while (!ValidateInput(num, base))
         {
-            cout << "\n\nINVALID INPUT FOR BASE " << base << "!  Please enter a valid number for base " << base << ": ";
-            cin >> num;
+            std::cout << "\n\nINVALID INPUT FOR BASE " << base << "!  Please enter a valid number for base " << base << ": ";
+            std::cin >> num;
 
             ValidateInput(num, base);
         }
@@ -150,30 +180,48 @@ int main()
         if (base == 10)
         {
             int decimalNum = stoi(num);
-            cout << "Binary: " << decimalToBase(decimalNum, 2) << endl;
-            cout << "Octal: " << decimalToBase(decimalNum, 8) << endl;
-            cout << "Decimal: " << decimalNum << endl;
-            cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << endl;
+
+            std::cout << std::endl;
+            std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;
+            std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;
+            std::cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << std::endl;
         }
         else
         {
             int decimalNum = baseToDecimal(num, base);
-            if (decimalNum == -1)
+
+            std::cout << std::endl;
+
+            switch (base)
             {
-                cout << "Invalid input." << endl;
-                return 0;
+            case 2:
+                std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;
+                std::cout << "Decimal: " << decimalNum << std::endl;
+                std::cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << std::endl;
+
+                break;
+
+            case 8:
+                std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;
+                std::cout << "Decimal: " << decimalNum << std::endl;
+                std::cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << std::endl;
+
+                break;
+
+            case 16:
+                std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;
+                std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;
+                std::cout << "Decimal: " << decimalNum << std::endl;
+
+                break;
             }
-            cout << "Binary: " << decimalToBase(decimalNum, 2) << endl;
-            cout << "Octal: " << decimalToBase(decimalNum, 8) << endl;
-            cout << "Decimal: " << decimalNum << endl;
-            cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << endl;
         }
 
         /*---Final Output---*/
 
         //Ask user if they want to repeat the program
-        cout << "\n\n\nBegin again? [Y/N]: ";
-        cin >> repeat;
+        std::cout << "\n\n\nBegin again? [Y/N]: ";
+        std::cin >> repeat;
 
         switch (repeat)
         {
@@ -182,16 +230,13 @@ int main()
         default:
             while (repeat != 'Y' && repeat != 'y' && repeat != 'N' && repeat != 'n')
             {
-                cout << "\nInvalid!  Please enter either [Y/N]: ";
-                cin >> repeat;
+                std::cout << "\nINVALID!  Please enter either [Y/N]: ";
+                std::cin >> repeat;
             }
         }
     } while (repeat == 'Y' || repeat == 'y');//Repeat program if necessary
-    
-    cout << "\n\nSee you soon! :]\n\n" << endl;//Final message
-
+  
     /*---Concluding operations---*/
 
-    system("pause");//Prevents premature closure
     return 0;//Returns '0' to 'main()'
 }
