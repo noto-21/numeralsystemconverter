@@ -7,6 +7,7 @@
 
 #include <iostream>//Includes <iostream> for In/Out
 #include <string>//Includes <string> for linguistic input
+#include <cmath>//Math functions
 
 /*---Preprocessor Directives---*/
 
@@ -86,7 +87,7 @@ void STOI_CATCH(std::string& bIn, int& b)
         }
         catch (std::invalid_argument const& ex)
         {
-            std::cout << "\n\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
+            std::cout << "\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
             std::cin >> bIn;
         }
     }
@@ -159,7 +160,7 @@ int main()
 
         while (!ValidateInput(base))
         {
-            std::cout << "\n\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
+            std::cout << "\nINVALID INPUT!  Try again please [2, 8, 10, or 16]: ";
             std::cin >> baseIn;
 
             STOI_CATCH(baseIn, base);
@@ -167,11 +168,11 @@ int main()
             ValidateInput(base);
         }
 
-        std::cout << "\n\nNow please enter the number itself: ";
+        std::cout << "\nNow please enter the number itself: ";
         std::cin >> num;
         while (!ValidateInput(num, base))
         {
-            std::cout << "\n\nINVALID INPUT FOR BASE " << base << "!  Please enter a valid number for base " << base << ": ";
+            std::cout << "\nINVALID INPUT FOR BASE " << base << "!  Please enter a valid number for base " << base << ": ";
             std::cin >> num;
 
             ValidateInput(num, base);
@@ -220,7 +221,7 @@ int main()
         /*---Final Output---*/
 
         //Ask user if they want to repeat the program
-        std::cout << "\n\n\nBegin again? [Y/N]: ";
+        std::cout << "\nBegin again? [Y/N]: ";
         std::cin >> repeat;
 
         switch (repeat)
