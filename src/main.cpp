@@ -12,31 +12,23 @@ int main()
     do
     {
         clearConsole();//Clears the console
-
-        std::cout << "Base of number to convert <2|8|10|16>: ";
-        std::string baseIn;//String to hold base input
-        std::cin >> baseIn;//Takes base input
-
-        int base = 0;//Base
         
         try
         {
+            std::cout << "Base of number to convert <2|8|10|16>: ";
+            std::string baseIn;//String to hold base input
+            std::cin >> baseIn;//Takes base input
+
+            int base = 0;//Base
+
             base = parseBaseInput(baseIn);//Parses base input
-        }
-        catch (const std::invalid_argument& e)//Catch invalid argument
-        {
-            std::cerr << e.what() << std::endl;//Output error message
-            continue;//Continue to next iteration
-        }
 
-        std::cout << "Number: ";
-        std::string num;//String to hold number input
-        std::cin >> num;//Takes number input
+            std::cout << "Number: ";
+            std::string num;//String to hold number input
+            std::cin >> num;//Takes number input
         
-        try
-        {
             if (!isValidNumberInput(num, base))//If number is invalid
-                throw std::invalid_argument("Invalid number input!");//Throw invalid argument
+                throw std::invalid_argument("INVALID INPUT!  Please enter a valid number.");//Throw invalid argument
             
             if (base == 10)//If base is decimal
             {
