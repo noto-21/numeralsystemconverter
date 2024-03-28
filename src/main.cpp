@@ -13,7 +13,7 @@ int main()
     {
         clearConsole();//Clears the console
 
-        std::cout << "Base of number to convert: ";
+        std::cout << "Base of number to convert <2|8|10|16>: ";
         std::string baseIn;//String to hold base input
         std::cin >> baseIn;//Takes base input
 
@@ -36,30 +36,56 @@ int main()
         try
         {
             if (!isValidNumberInput(num, base))//If number is invalid
-                throw std::invalid_argument("Invalid number input");//Throw invalid argument
+                throw std::invalid_argument("Invalid number input!");//Throw invalid argument
             
             if (base == 10)//If base is decimal
             {
                 int decimalNum = std::stoi(num);//Converts string to integer
-                std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;//Converts decimal to binary
+                std::cout << "\nBinary: " << decimalToBase(decimalNum, 2) << std::endl;//Converts decimal to binary
                 std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;//Converts decimal to octal
                 std::cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << std::endl;//Converts decimal to hexadecimal
             }
             else//If base is not decimal
             {
-                int decimalNum = baseToDecimal(num, base);//Converts base to decimal
-                std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;//Converts decimal to binary
-                std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;//Converts decimal to octal
-                std::cout << "Decimal: " << decimalNum << std::endl;//Outputs decimal
+                int decimalNum = baseToDecimal(num, base);//Converts number to decimal
+
+                std::cout << std::endl;//New line
+
+                switch (base)//Switch statement for base
+                {
+                    case 2://If base is binary
+                        std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;
+                        std::cout << "Decimal: " << decimalNum << std::endl;
+                        std::cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << std::endl;
+
+                        break;
+
+                    case 8://If base is octal
+                        std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;
+                        std::cout << "Decimal: " << decimalNum << std::endl;
+                        std::cout << "Hexadecimal: " << decimalToBase(decimalNum, 16) << std::endl;
+
+                        break;
+
+                    case 16://If base is hexadecimal
+                        std::cout << "Binary: " << decimalToBase(decimalNum, 2) << std::endl;
+                        std::cout << "Octal: " << decimalToBase(decimalNum, 8) << std::endl;
+                        std::cout << "Decimal: " << decimalNum << std::endl;
+
+                        break;
+                }
             }
         }
-        catch (const std::invalid_argument& e)//Catch invalid argument
+        catch (std::invalid_argument const&)
         {
-            std::cerr << e.what() << std::endl;//Output error message
-            continue;//Continue to next iteration
+            std::cerr << "INVALID INPUT!  Please enter a valid number." << std::endl;
+        }
+        catch (std::out_of_range const&)
+        {
+            std::cerr << "OUT OF RANGE!  Please enter a valid number." << std::endl;
         }
 
-        std::cout << "Begin again? [Y/N]: ";//Prompts user to repeat
+        std::cout << std::endl << "Begin again? [Y/N]: ";//Prompts user to repeat
         std::cin >> repeat;//Takes repeat input
     } while (repeat == 'Y' || repeat == 'y');
 

@@ -30,12 +30,16 @@ int parseBaseInput(const std::string& baseIn)//Function to parse base input
         int base = std::stoi(baseIn);//Converts string to integer
 
         if (!isValidBaseInput(baseIn))//If input is invalid
-            throw std::invalid_argument("Invalid base input");//Throw invalid argument
+            throw std::invalid_argument("Invalid base input!");//Throw invalid argument
 
         return base;//Return base
     }
     catch (const std::invalid_argument&)//Catch invalid argument
     {
-        throw std::invalid_argument("Invalid base input");//Throw invalid argument
+        throw std::invalid_argument("Invalid base input!");//Throw invalid argument
+    }
+    catch (const std::out_of_range&)//Catch out of range
+    {
+        throw std::invalid_argument("Base input out of range!");//Throw invalid argument
     }
 }
