@@ -27,8 +27,12 @@ int main()
             std::string num;//String to hold number input
             std::cin >> num;//Takes number input
         
-            if (!isValidNumberInput(num, base))//If number is invalid
+            if (!isValidNumberInput(num, base))//If input is out of range
                 throw std::invalid_argument("INVALID INPUT!  Please enter a valid number.");//Throw invalid argument
+            if ((base == 2 && num.length() > std::string("1111111111111111111111111111111").length()) ||
+                (base == 8 && num.length() > std::string("17777777777").length()) ||
+                (base == 16 && num.length() > std::string("7FFFFFFF").length()))//If input is out of range
+                throw std::out_of_range("OUT OF RANGE!  Please enter a valid number.");//Throw out of range
             
             if (base == 10)//If base is decimal
             {
@@ -77,7 +81,7 @@ int main()
             std::cerr << "OUT OF RANGE!  Please enter a valid number." << std::endl;
         }
 
-        std::cout << std::endl << "Begin again? [Y/N]: ";//Prompts user to repeat
+        std::cout << std::endl << "Begin again? [Y]: ";//Prompts user to repeat
         std::cin >> repeat;//Takes repeat input
     } while (repeat == 'Y' || repeat == 'y');
 
