@@ -29,9 +29,7 @@ int main()
         
             if (!isValidNumberInput(num, base))//If input is out of range
                 throw std::invalid_argument("INVALID INPUT!  Please enter a valid number.");//Throw invalid argument
-            if ((base == 2 && num.length() > std::string("1111111111111111111111111111111").length()) ||
-                (base == 8 && num.length() > std::string("7777777777").length()) ||
-                (base == 16 && num.length() > std::string("FFFFFFF").length()))//If input is out of range
+            if ((base == 2 && num.length() > 32) || (base == 8 && num.length() > 11) || (base == 10 && num.length() > 10) || (base == 16 && num.length() > 8))//If input is out of range
                 throw std::out_of_range("OUT OF RANGE!  Please enter a valid number.");//Throw out of range
             
             if (base == 10)//If base is decimal
